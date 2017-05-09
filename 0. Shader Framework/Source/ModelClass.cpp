@@ -195,11 +195,7 @@ void ModelClass::LoadModel(string objFileName, string textureFileName)
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-	// ¤W¶Ç Element index
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model.ElementBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, shapes[0].mesh.indices.size() * sizeof(unsigned int), shapes[0].mesh.indices.data(), GL_STATIC_DRAW);
-
-	model.indexCount = shapes[0].mesh.indices.size();
+	model.indexCount = shapes[0].mesh.positions.size() / 3;
 	#pragma endregion
 	#pragma region ¸j¶K¹Ï
 	TextureData tdata = Load_png(("Images/" + textureFileName).c_str());
@@ -234,7 +230,7 @@ void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM)
 	
 	glUniform1ui(modelLoc.IsUseTextureLoc, model.IsUseTexture);
 
-	glDrawElements(GL_TRIANGLES, model.indexCount, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, model.indexCount);
 
 	glUseProgram(0);
 	glBindVertexArray(0);

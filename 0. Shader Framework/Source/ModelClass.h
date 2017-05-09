@@ -17,7 +17,6 @@ struct ModelInfo
 	GLuint VertextBO;																// Vertex Buffer Object		=> 點的資訊
 	GLuint NormalBO;																// Normal 的 Buffer Object	=> 向量的資訊
 	GLuint UVBO;																	// Texture UV 的 BufferObject=> 存貼圖的座標資訊
-	GLuint ElementBO;																// Element Buffer Object	=> 存 Index ，這樣我點只要送上去一次，用 Index 去畫就可以了
 
 	int indexCount;																	// 總共有幾個 Index
 	GLuint IsUseTexture = 1;														// 是否有使用貼圖
