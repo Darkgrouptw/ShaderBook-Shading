@@ -13,6 +13,7 @@ struct ModelLocInfo
 	GLuint LightPosLoc;																// 光亮度的位置
 
 	GLuint IsUseTextureLoc;															// Use Texture Loc
+	GLuint IsDrawWireframeLoc;														// 是否要話 Wireframe
 };
 struct ModelInfo
 {
@@ -32,7 +33,7 @@ public:
 	ModelClass(string, string, string, string, bool);
 	~ModelClass();
 
-	void Draw(mat4, mat4, mat4, vec3);
+	void Draw(mat4, mat4, mat4, vec3, bool);
 
 	mat4 ModelM;																	// Model 移動的矩陣
 private:

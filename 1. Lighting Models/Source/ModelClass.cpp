@@ -153,6 +153,7 @@ void ModelClass::InitProgram(string VertexShaderFileName, string FragmentShaderF
 
 	modelLoc.LightPosLoc			= glGetUniformLocation(Program, "LightPos");
 	modelLoc.IsUseTextureLoc		= glGetUniformLocation(Program, "IsUseTexture");
+	modelLoc.IsDrawWireframeLoc		= glGetUniformLocation(Program, "IsDrawWireframe");
 }
 void ModelClass::LoadModel(string objFileName, string textureFileName)
 {
@@ -316,7 +317,7 @@ void ModelClass::LoadModel_Flat(string objFileName, string textureFileName)
 	#pragma endregion
 }
 
-void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos)
+void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool IsDrawWireframe)
 {
 	glUseProgram(Program);
 	glBindVertexArray(model.VAO);
@@ -328,6 +329,7 @@ void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos)
 	glUniform3fv(modelLoc.LightPosLoc, 1, value_ptr(lightPos));
 
 	glUniform1ui(modelLoc.IsUseTextureLoc, model.IsUseTexture);
+	glUniform1ui(modelLoc.IsDrawWireframeLoc, ((IsDrawWireframe) ? 1 : 0));
 
 	glDrawArrays(GL_TRIANGLES, 0, model.indexCount);
 }

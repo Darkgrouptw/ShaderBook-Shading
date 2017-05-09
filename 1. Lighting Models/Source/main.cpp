@@ -29,6 +29,7 @@ bool UI_UseGourandShading = false;	// 是否要用 Gourand Shading
 bool UI_UsePhongShading = false;	// 是否要用 Phong Shading
 
 bool UI_AutoRotation = true;		// 是否要自動旋轉
+bool UI_DrawWireframe = true;		// 是否要畫面
 
 //////////////////////////////////////////////////////////////////////////
 // UI Callback Function
@@ -88,6 +89,16 @@ void TW_CALL GetAutoRotationCB(void *value, void *clientData)
 	*(bool *)value = UI_AutoRotation;
 }
 #pragma endregion
+#pragma region Draw Wireframe
+void TW_CALL SetDrawWireframeCB(const void *value, void *clientData)
+{
+	UI_DrawWireframe = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
+}
+void TW_CALL GetDrawWireframeCB(void *value, void *clientData)
+{
+	*(bool *)value = UI_DrawWireframe;
+}
+#pragma endregion
 #pragma endregion
 
 
@@ -111,7 +122,8 @@ void TwBar_Init()
 	TwAddVarCB(UIBar, "Flat Shading",	TW_TYPE_BOOL32, SetUseFlatShadingCB,	GetUseFlatShadingCB,	NULL, " group='Lighting Models' ");
 	TwAddVarCB(UIBar, "Gourand Shading",TW_TYPE_BOOL32, SetUseGourandShadingCB, GetUseGourandShadingCB, NULL, " group='Lighting Models' ");
 	TwAddVarCB(UIBar, "Phong Shading",	TW_TYPE_BOOL32, SetUsePhongShadingCB,	GetUsePhongShadingCB,	NULL, " group='Lighting Models' ");
-	TwAddVarCB(UIBar, "Auto Rotation", TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
+	TwAddVarCB(UIBar, "Auto Rotation",	TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
+	TwAddVarCB(UIBar, "Draw Wireframe", TW_TYPE_BOOL32,	SetDrawWireframeCB,		GetDrawWireframeCB,		NULL, "");
 	//TwDefine(" GLOBAL help='This example shows how to integrate AntTweakBar with GLUT and OpenGL.' "); // Message added to the help bar.
 	//TwDefine(" TweakBar size='200 400' color='96 216 224' "); // change default tweak bar size and color
 }
@@ -122,22 +134,23 @@ void Init_Event()
 	glDepthFunc(GL_LEQUAL);
 
 	// Camera 設定
-	m_camera.SetZoom(3);
+	m_camera.SetZoom(1.56294f);
+	m_camera.SetRotation(0, 0.32f);
 
 	// 設定光線
 	lightPos = vec3(0, 10, 10);
 
 	#pragma region 場景放置
 	ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Cube_8x8.obj", "", true);
-	tempModel.ModelM *= translate(vec3(-5, 0, 0));
+	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
 
 	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_15x15.obj", "", true);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_50x50.obj", "", true);
-	tempModel.ModelM *= translate(vec3(5, 0, 0));
+	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_40x40.obj", "", true);
+	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
 	#pragma endregion
 }
@@ -150,7 +163,7 @@ void Display_Event()
 
 	// 把 Model 畫出來
 	for (size_t i = 0; i < models.size(); i++)
-		models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos);
+		models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos, UI_DrawWireframe);
 
 	// 畫 UI
 	TwDraw();

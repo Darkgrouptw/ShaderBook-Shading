@@ -57,12 +57,13 @@ public:
 	glm::vec3 GetEyePosition() {return eyePosition;}
 	glm::vec3 GetViewVector() {return viewVector;}
 	float GetZoom();
+
+	void SetViewMatrix(glm::mat4);
+
 	void SetZoom(float );
 
 	glm::vec3 GetWorldEyePosition();
 	glm::vec3 GetWorldViewVector();
-
-	void	SetViewMatrix(glm::mat4);
 
     bool IsOrthoProjection() { return ortho; }
 

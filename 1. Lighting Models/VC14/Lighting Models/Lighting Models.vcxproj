@@ -84,8 +84,8 @@
     <ClCompile Include="..\..\Source\ViewManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Shading\Include\Common.h" />
-    <ClInclude Include="..\..\..\Shading\Include\ViewManager.h" />
+    <ClInclude Include="..\..\Include\Common.h" />
+    <ClInclude Include="..\..\Include\ViewManager.h" />
     <ClInclude Include="..\..\Source\ModelClass.h" />
   </ItemGroup>
   <ItemGroup>

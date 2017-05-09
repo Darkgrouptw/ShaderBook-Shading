@@ -32,10 +32,10 @@
     <ClInclude Include="..\..\Source\ModelClass.h">
       <Filter>Headers\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Shading\Include\Common.h">
+    <ClInclude Include="..\..\Include\ViewManager.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Shading\Include\ViewManager.h">
+    <ClInclude Include="..\..\Include\Common.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
