@@ -199,7 +199,7 @@ void ModelClass::LoadModel(string objFileName, string textureFileName ,bool IsFl
 	model.matInfo.Ka = vec3(0.24725f, 0.1995f, 0.0745f);
 	model.matInfo.Kd = vec3(0.75164f, 0.60648f, 0.22648);
 	model.matInfo.Ks = vec3(0.628281f, 0.555802f, 0.366065f);
-	model.matInfo.Shininess = .4f;
+	model.matInfo.Shininess = .1f * 128;
 	#pragma endregion
 	#pragma region 綁點的資訊上 GPU
 	//////////////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool I
 	glUniform3fv(modelLoc.MaterialInfo_KaLoc, 1, value_ptr(model.matInfo.Ka));
 	glUniform3fv(modelLoc.MaterialInfo_KdLoc, 1, value_ptr(model.matInfo.Kd));
 	glUniform3fv(modelLoc.MaterialInfo_KsLoc, 1, value_ptr(model.matInfo.Ks));
-	glUniform1ui(modelLoc.MaterialInfo_ShininessLoc, model.matInfo.Shininess);
+	glUniform1f(modelLoc.MaterialInfo_ShininessLoc, model.matInfo.Shininess);
 
 	glUniform3fv(modelLoc.LightPosLoc, 1, value_ptr(lightPos));
 

@@ -21,7 +21,7 @@ uniform uint			IsUseTexture;				// 是否使用貼圖
 uniform uint			IsDrawWireframe;			// 是否要話邊線
 
 // 顏色設定
-const vec4 BorderColor			= vec4(0, 0, 0, 1);
+const vec4 BorderColor		= vec4(0, 0, 0, 1);
 const vec4 AmbientLightColor	= vec4(0.1, 0.1, 0.1, 1);
 const vec4 DiffuseLightColor	= vec4(0.8, 0.8, 0.8, 1);
 const vec4 SpecularLightColor	= vec4(1, 1, 1, 1);

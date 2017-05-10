@@ -91,6 +91,10 @@
   <ItemGroup>
     <None Include="..\..\Assets\Shaders\Flat.fs.glsl" />
     <None Include="..\..\Assets\Shaders\Flat.vs.glsl" />
+    <None Include="..\..\Assets\Shaders\Gouraud.fs.glsl" />
+    <None Include="..\..\Assets\Shaders\Gouraud.vs.glsl" />
+    <None Include="..\..\Assets\Shaders\Phong.fs.glsl" />
+    <None Include="..\..\Assets\Shaders\Phong.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

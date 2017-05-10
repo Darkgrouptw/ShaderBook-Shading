@@ -46,5 +46,17 @@
     <None Include="..\..\Assets\Shaders\Flat.vs.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\..\Assets\Shaders\Phong.vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Assets\Shaders\Phong.fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Assets\Shaders\Gouraud.fs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\..\Assets\Shaders\Gouraud.vs.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

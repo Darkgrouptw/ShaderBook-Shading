@@ -21,7 +21,7 @@ vec3			lightPos;
 
 void  SetModelVisiable(string flags)
 {
-	for (int i = 0; i < models.size(); i++)
+	for (size_t i = 0; i < models.size(); i++)
 		IsVisiable[i] = (modelTags[i] == flags);
 }
 #pragma endregion
@@ -50,6 +50,7 @@ void TW_CALL SetUseFlatShadingCB(const void *value, void *clientData)
 	{
 		UI_UseGouraudShading = false;
 		UI_UsePhongShading = false;
+		SetModelVisiable("Flat");
 	}
 }
 void TW_CALL GetUseFlatShadingCB(void *value, void *clientData)
@@ -65,6 +66,7 @@ void TW_CALL SetUseGouraudShadingCB(const void *value, void *clientData)
 	{
 		UI_UseFlatShading = false;
 		UI_UsePhongShading = false;
+		SetModelVisiable("Gouraud");
 	}
 }
 void TW_CALL GetUseGouraudShadingCB(void *value, void *clientData)
@@ -80,6 +82,7 @@ void TW_CALL SetUsePhongShadingCB(const void *value, void *clientData)
 	{
 		UI_UseFlatShading = false;
 		UI_UseGouraudShading = false;
+		SetModelVisiable("Phong");
 	}
 }
 void TW_CALL GetUsePhongShadingCB(void *value, void *clientData)
@@ -137,7 +140,7 @@ void TwBar_Init()
 }
 void Init_Event()
 {
-	glClearColor(0.2f, 0.84, 0.8f, 1);
+	glClearColor(0.2f, 0.84f, 0.8f, 1);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
@@ -168,23 +171,42 @@ void Init_Event()
 	modelTags.push_back("Flat");
 	#pragma endregion
 	#pragma region Gouraud Shading 的東西
-	/*ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Cube_8x8.obj", "", true);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_8x8.obj", "", false);
 	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Gouraud");
 
-	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_15x15.obj", "", true);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_15x15.obj", "", false);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Gouraud");
 
-	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_40x40.obj", "", true);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_40x40.obj", "", false);
 	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
-	modelTags.push_back("Gouraud");*/
+	modelTags.push_back("Gouraud");
+	#pragma endregion
+	#pragma region Phong Shading 的東西
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_8x8.obj", "", false);
+	tempModel.ModelM *= translate(vec3(-3, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Phong");
+
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_15x15.obj", "", false);
+	tempModel.ModelM *= translate(vec3(0, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Phong");
+
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_40x40.obj", "", false);
+	tempModel.ModelM *= translate(vec3(3, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Phong");
 	#pragma endregion
 	#pragma endregion
 }
@@ -219,7 +241,7 @@ void Timer_Event(int val)
 {
 	if(UI_AutoRotation)
 		for (size_t i = 0; i < models.size(); i++)
-			models[i].ModelM *= rotate(0.02f, vec3(0, 1, 0));
+			models[i].ModelM *= rotate(0.01f, vec3(0, 1, 0));
 
 	glutPostRedisplay();
 	glutTimerFunc(16, Timer_Event, val);
