@@ -31,7 +31,6 @@ TwBar *UIBar;						// 顯示的 Bar
 //////////////////////////////////////////////////////////////////////////
 // 參數
 //////////////////////////////////////////////////////////////////////////
-//bool UI_IsAutoRotate = false;
 bool UI_UseFlatShading = true;		// 是否要用 Flat Shading
 bool UI_UseGouraudShading = false;	// 是否要用 Gouraud Shading
 bool UI_UsePhongShading = false;	// 是否要用 Phong Shading
@@ -135,6 +134,7 @@ void TwBar_Init()
 	TwAddVarCB(UIBar, "Phong Shading",	TW_TYPE_BOOL32, SetUsePhongShadingCB,	GetUsePhongShadingCB,	NULL, " group='Lighting Models' ");
 	TwAddVarCB(UIBar, "Auto Rotation",	TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
 	TwAddVarCB(UIBar, "Draw Wireframe", TW_TYPE_BOOL32,	SetDrawWireframeCB,		GetDrawWireframeCB,		NULL, "");
+	TwAddVarRW(UIBar, "LightDir", TW_TYPE_DIR3F, &lightPos," open ");
 	//TwDefine(" GLOBAL help='This example shows how to integrate AntTweakBar with GLUT and OpenGL.' "); // Message added to the help bar.
 	//TwDefine(" TweakBar size='200 400' color='96 216 224' "); // change default tweak bar size and color
 }
@@ -356,7 +356,7 @@ int main(int argc, char *argv[])
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(Width, Height);
-	glutCreateWindow("Shading");
+	glutCreateWindow("Shading - Lighting Models");
 	#ifdef _MSC_VER
 	glewInit();
 	#endif
