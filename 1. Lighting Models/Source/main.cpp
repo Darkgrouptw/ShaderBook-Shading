@@ -11,11 +11,19 @@ const int Width = 1200;
 const int Height = 900;
 #pragma endregion
 #pragma region Model 相關
-vector<ModelClass> models;
+vector<ModelClass>	models;
+vector<bool>		IsVisiable;
+vector<string>		modelTags;
 
 float			aspect;
 ViewManager		m_camera;
 vec3			lightPos;
+
+void  SetModelVisiable(string flags)
+{
+	for (int i = 0; i < models.size(); i++)
+		IsVisiable[i] = (modelTags[i] == flags);
+}
 #pragma endregion
 #pragma region AnTweakBar 相關
 TwBar *UIBar;						// 顯示的 Bar
@@ -25,7 +33,7 @@ TwBar *UIBar;						// 顯示的 Bar
 //////////////////////////////////////////////////////////////////////////
 //bool UI_IsAutoRotate = false;
 bool UI_UseFlatShading = true;		// 是否要用 Flat Shading
-bool UI_UseGourandShading = false;	// 是否要用 Gourand Shading
+bool UI_UseGouraudShading = false;	// 是否要用 Gouraud Shading
 bool UI_UsePhongShading = false;	// 是否要用 Phong Shading
 
 bool UI_AutoRotation = true;		// 是否要自動旋轉
@@ -40,7 +48,7 @@ void TW_CALL SetUseFlatShadingCB(const void *value, void *clientData)
 	UI_UseFlatShading = *(const bool *)value;										// 會自動幫你轉成負的，並在 Call 一次 Get
 	if (UI_UseFlatShading)
 	{
-		UI_UseGourandShading = false;
+		UI_UseGouraudShading = false;
 		UI_UsePhongShading = false;
 	}
 }
@@ -49,19 +57,19 @@ void TW_CALL GetUseFlatShadingCB(void *value, void *clientData)
 	*(bool *)value = UI_UseFlatShading;												// 拿這個值，設定到 UI 上面
 }
 #pragma endregion
-#pragma region Gourand Shading
-void TW_CALL SetUseGourandShadingCB(const void *value, void *clientData)
+#pragma region Gouraud Shading
+void TW_CALL SetUseGouraudShadingCB(const void *value, void *clientData)
 {
-	UI_UseGourandShading = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
-	if (UI_UseGourandShading)
+	UI_UseGouraudShading = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
+	if (UI_UseGouraudShading)
 	{
 		UI_UseFlatShading = false;
 		UI_UsePhongShading = false;
 	}
 }
-void TW_CALL GetUseGourandShadingCB(void *value, void *clientData)
+void TW_CALL GetUseGouraudShadingCB(void *value, void *clientData)
 {
-	*(bool *)value = UI_UseGourandShading;											// 拿這個值，設定到 UI 上面
+	*(bool *)value = UI_UseGouraudShading;											// 拿這個值，設定到 UI 上面
 }
 #pragma endregion
 #pragma region Phong Shading
@@ -71,7 +79,7 @@ void TW_CALL SetUsePhongShadingCB(const void *value, void *clientData)
 	if (UI_UsePhongShading)
 	{
 		UI_UseFlatShading = false;
-		UI_UseGourandShading = false;
+		UI_UseGouraudShading = false;
 	}
 }
 void TW_CALL GetUsePhongShadingCB(void *value, void *clientData)
@@ -120,7 +128,7 @@ void TwBar_Init()
 
 	// 加上事件
 	TwAddVarCB(UIBar, "Flat Shading",	TW_TYPE_BOOL32, SetUseFlatShadingCB,	GetUseFlatShadingCB,	NULL, " group='Lighting Models' ");
-	TwAddVarCB(UIBar, "Gourand Shading",TW_TYPE_BOOL32, SetUseGourandShadingCB, GetUseGourandShadingCB, NULL, " group='Lighting Models' ");
+	TwAddVarCB(UIBar, "Gouraud Shading",TW_TYPE_BOOL32, SetUseGouraudShadingCB, GetUseGouraudShadingCB, NULL, " group='Lighting Models' ");
 	TwAddVarCB(UIBar, "Phong Shading",	TW_TYPE_BOOL32, SetUsePhongShadingCB,	GetUsePhongShadingCB,	NULL, " group='Lighting Models' ");
 	TwAddVarCB(UIBar, "Auto Rotation",	TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
 	TwAddVarCB(UIBar, "Draw Wireframe", TW_TYPE_BOOL32,	SetDrawWireframeCB,		GetDrawWireframeCB,		NULL, "");
@@ -129,7 +137,7 @@ void TwBar_Init()
 }
 void Init_Event()
 {
-	glClearColor(0.2f, 0.4f, 0.8f, 1);
+	glClearColor(0.2f, 0.84, 0.8f, 1);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
@@ -139,19 +147,45 @@ void Init_Event()
 
 	// 設定光線
 	lightPos = vec3(0, 10, 10);
-
 	#pragma region 場景放置
+	#pragma region Flat Shading 的東西
 	ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Cube_8x8.obj", "", true);
 	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
+	IsVisiable.push_back(true);
+	modelTags.push_back("Flat");
 
 	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_15x15.obj", "", true);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
+	IsVisiable.push_back(true);
+	modelTags.push_back("Flat");
 
 	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_40x40.obj", "", true);
 	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
+	IsVisiable.push_back(true);
+	modelTags.push_back("Flat");
+	#pragma endregion
+	#pragma region Gouraud Shading 的東西
+	/*ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Cube_8x8.obj", "", true);
+	tempModel.ModelM *= translate(vec3(-3, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Gouraud");
+
+	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_15x15.obj", "", true);
+	tempModel.ModelM *= translate(vec3(0, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Gouraud");
+
+	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_40x40.obj", "", true);
+	tempModel.ModelM *= translate(vec3(3, 0, 0));
+	models.push_back(tempModel);
+	IsVisiable.push_back(false);
+	modelTags.push_back("Gouraud");*/
+	#pragma endregion
 	#pragma endregion
 }
 #pragma endregion
@@ -163,7 +197,8 @@ void Display_Event()
 
 	// 把 Model 畫出來
 	for (size_t i = 0; i < models.size(); i++)
-		models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos, UI_DrawWireframe);
+		if (IsVisiable[i])
+			models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos, UI_DrawWireframe);
 
 	// 畫 UI
 	TwDraw();

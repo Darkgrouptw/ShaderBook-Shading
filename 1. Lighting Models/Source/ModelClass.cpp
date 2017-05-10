@@ -3,11 +3,7 @@
 ModelClass::ModelClass(string VertexShaderFileName, string FragmentShaderFileName, string objFileName, string textureFileName, bool IsFlat)
 {
 	InitProgram(VertexShaderFileName, FragmentShaderFileName);
-
-	if (IsFlat)
-		LoadModel_Flat(objFileName, textureFileName);
-	else
-		LoadModel(objFileName, textureFileName);
+	LoadModel(objFileName, textureFileName, IsFlat);
 }
 ModelClass::~ModelClass()
 {
@@ -151,81 +147,16 @@ void ModelClass::InitProgram(string VertexShaderFileName, string FragmentShaderF
 	modelLoc.View_MatrixLoc			= glGetUniformLocation(Program, "ViewM");
 	modelLoc.Model_MatrixLoc		= glGetUniformLocation(Program, "ModelM");
 
+	modelLoc.MaterialInfo_KaLoc		= glGetUniformLocation(Program, "matInfo.Ka");
+	modelLoc.MaterialInfo_KdLoc		= glGetUniformLocation(Program, "matInfo.Kd");
+	modelLoc.MaterialInfo_KsLoc		= glGetUniformLocation(Program, "matInfo.Ks");
+	modelLoc.MaterialInfo_ShininessLoc = glGetUniformLocation(Program, "matInfo.Shininess");
+
 	modelLoc.LightPosLoc			= glGetUniformLocation(Program, "LightPos");
 	modelLoc.IsUseTextureLoc		= glGetUniformLocation(Program, "IsUseTexture");
 	modelLoc.IsDrawWireframeLoc		= glGetUniformLocation(Program, "IsDrawWireframe");
 }
-void ModelClass::LoadModel(string objFileName, string textureFileName)
-{
-	#pragma region 宣告
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
-
-	std::string err;
-	#pragma endregion
-	#pragma region  讀檔部分
-	bool ret = tinyobj::LoadObj(shapes, materials, err, ("Models/"+ objFileName).c_str());
-	if (err.size() > 0)
-	{
-		printf("Load Models Fail! Please check the solution path");
-		return;
-	}
-	printf("Load Models Success ! Shapes size %d Material size %d\n", shapes.size(), materials.size());
-	#pragma endregion
-	#pragma region 綁點的資訊上 GPU
-	//////////////////////////////////////////////////////////////////////////
-	// 看一下其他章的，這種寫法 Shapes 只能有一個，超過一個畫無法畫出來 = =
-	//////////////////////////////////////////////////////////////////////////
-
-	// 將接下來的東西用 Array 包起來
-	glGenVertexArrays(1, &model.VAO);
-	glBindVertexArray(model.VAO);
-
-	// 上傳 Vertex
-	glGenBuffers(1, &model.VertextBO);
-	glBindBuffer(GL_ARRAY_BUFFER, model.VertextBO);
-	glBufferData(GL_ARRAY_BUFFER, shapes[0].mesh.positions.size() * sizeof(float), shapes[0].mesh.positions.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-	// 上傳 UV 座標
-	glGenBuffers(1, &model.UVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, model.UVBO);
-	glBufferData(GL_ARRAY_BUFFER, shapes[0].mesh.texcoords.size() * sizeof(float), shapes[0].mesh.texcoords.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-
-	// 上傳 Normal
-	glGenBuffers(1, &model.NormalBO);
-	glBindBuffer(GL_ARRAY_BUFFER, model.NormalBO);
-	glBufferData(GL_ARRAY_BUFFER, shapes[0].mesh.normals.size() * sizeof(float), shapes[0].mesh.normals.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-	model.indexCount = shapes[0].mesh.indices.size();
-	#pragma endregion
-	#pragma region 綁貼圖
-	TextureData tdata = Load_png(("Images/" + textureFileName).c_str());
-
-	// 如果沒有用貼圖的畫，就直接回傳
-	if (tdata.data == NULL)
-	{
-		model.IsUseTexture = 0;
-		return;
-	}
-
-	glGenTextures(1, &model.textureID);
-	glBindTexture(GL_TEXTURE_2D, model.textureID);
-
-	//Do texture setting
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, tdata.width, tdata.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tdata.data);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	#pragma endregion
-}
-void ModelClass::LoadModel_Flat(string objFileName, string textureFileName)
+void ModelClass::LoadModel(string objFileName, string textureFileName ,bool IsFlat)
 {
 	#pragma region 宣告
 	std::vector<tinyobj::shape_t> shapes;
@@ -242,26 +173,33 @@ void ModelClass::LoadModel_Flat(string objFileName, string textureFileName)
 	}
 	printf("Load Models Success ! Shapes size %d Material size %d\n", shapes.size(), materials.size());
 
-	// Flat 的重點 => 因為以前的 GPU 計算比較慢，所以導致只用一個 Normal 來表示
-	for (size_t i = 0; i < shapes[0].mesh.normals.size(); i += 3 * 3)
-	{
-		vec3 p1(shapes[0].mesh.positions[i],		shapes[0].mesh.positions[i + 1], shapes[0].mesh.positions[i + 2]);
-		vec3 p2(shapes[0].mesh.positions[i + 3],	shapes[0].mesh.positions[i + 4], shapes[0].mesh.positions[i + 5]);
-		vec3 p3(shapes[0].mesh.positions[i + 6],	shapes[0].mesh.positions[i + 7], shapes[0].mesh.positions[i + 8]);
+	if(IsFlat)
+		// Flat 的重點 => 因為以前的 GPU 計算比較慢，所以導致只用一個 Normal 來表示
+		for (size_t i = 0; i < shapes[0].mesh.normals.size(); i += 3 * 3)
+		{
+			vec3 p1(shapes[0].mesh.positions[i],		shapes[0].mesh.positions[i + 1], shapes[0].mesh.positions[i + 2]);
+			vec3 p2(shapes[0].mesh.positions[i + 3],	shapes[0].mesh.positions[i + 4], shapes[0].mesh.positions[i + 5]);
+			vec3 p3(shapes[0].mesh.positions[i + 6],	shapes[0].mesh.positions[i + 7], shapes[0].mesh.positions[i + 8]);
 
-		vec3 crossNormal = cross((p2 - p1), (p3 - p1));
-		crossNormal = normalize(crossNormal);
+			vec3 crossNormal = cross((p2 - p1), (p3 - p1));
+			crossNormal = normalize(crossNormal);
 
-		shapes[0].mesh.normals[i]		= crossNormal.x;
-		shapes[0].mesh.normals[i + 1]	= crossNormal.y;
-		shapes[0].mesh.normals[i + 2]	= crossNormal.z;
-		shapes[0].mesh.normals[i + 3]	= crossNormal.x;
-		shapes[0].mesh.normals[i + 4]	= crossNormal.y;
-		shapes[0].mesh.normals[i + 5]	= crossNormal.z;
-		shapes[0].mesh.normals[i + 6]	= crossNormal.x;
-		shapes[0].mesh.normals[i + 7]	= crossNormal.y;
-		shapes[0].mesh.normals[i + 8]	= crossNormal.z;
-	}
+			shapes[0].mesh.normals[i]		= crossNormal.x;
+			shapes[0].mesh.normals[i + 1]	= crossNormal.y;
+			shapes[0].mesh.normals[i + 2]	= crossNormal.z;
+			shapes[0].mesh.normals[i + 3]	= crossNormal.x;
+			shapes[0].mesh.normals[i + 4]	= crossNormal.y;
+			shapes[0].mesh.normals[i + 5]	= crossNormal.z;
+			shapes[0].mesh.normals[i + 6]	= crossNormal.x;
+			shapes[0].mesh.normals[i + 7]	= crossNormal.y;
+			shapes[0].mesh.normals[i + 8]	= crossNormal.z;
+		}
+	
+	// Default 是 Gold
+	model.matInfo.Ka = vec3(0.24725f, 0.1995f, 0.0745f);
+	model.matInfo.Kd = vec3(0.75164f, 0.60648f, 0.22648);
+	model.matInfo.Ks = vec3(0.628281f, 0.555802f, 0.366065f);
+	model.matInfo.Shininess = .4f;
 	#pragma endregion
 	#pragma region 綁點的資訊上 GPU
 	//////////////////////////////////////////////////////////////////////////
@@ -325,6 +263,11 @@ void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool I
 	glUniformMatrix4fv(modelLoc.Projection_MatrixLoc, 1, GL_FALSE, value_ptr(projM));
 	glUniformMatrix4fv(modelLoc.View_MatrixLoc, 1, GL_FALSE, value_ptr(viewM));
 	glUniformMatrix4fv(modelLoc.Model_MatrixLoc, 1, GL_FALSE, value_ptr(modelM * ModelM));
+
+	glUniform3fv(modelLoc.MaterialInfo_KaLoc, 1, value_ptr(model.matInfo.Ka));
+	glUniform3fv(modelLoc.MaterialInfo_KdLoc, 1, value_ptr(model.matInfo.Kd));
+	glUniform3fv(modelLoc.MaterialInfo_KsLoc, 1, value_ptr(model.matInfo.Ks));
+	glUniform1ui(modelLoc.MaterialInfo_ShininessLoc, model.matInfo.Shininess);
 
 	glUniform3fv(modelLoc.LightPosLoc, 1, value_ptr(lightPos));
 
