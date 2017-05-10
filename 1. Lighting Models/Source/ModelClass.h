@@ -19,6 +19,10 @@ struct ModelLocInfo
 
 	GLuint IsUseTextureLoc;															// Use Texture Loc
 	GLuint IsDrawWireframeLoc;														// 是否要話 Wireframe
+
+	GLuint IsUseAmbientLightingLoc;													// 是否使用 Ambient Lighting
+	GLuint IsUseDiffuseLightingLoc;													// 是否使用 Diffuse Lighting
+	GLuint IsUseSpecularLightingLoc;												// 是否使用 Specular Lighting
 };
 struct MaterialInfo
 {
@@ -47,7 +51,7 @@ public:
 	ModelClass(string, string, string, string, bool);
 	~ModelClass();
 
-	void Draw(mat4, mat4, mat4, vec3, bool);
+	void Draw(mat4, mat4, mat4, vec3, bool, bool, bool, bool);
 
 	mat4 ModelM;																	// Model 移動的矩陣
 private:

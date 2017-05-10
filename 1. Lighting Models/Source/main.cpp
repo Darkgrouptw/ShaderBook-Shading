@@ -35,6 +35,10 @@ bool UI_UseFlatShading = true;		// 是否要用 Flat Shading
 bool UI_UseGouraudShading = false;	// 是否要用 Gouraud Shading
 bool UI_UsePhongShading = false;	// 是否要用 Phong Shading
 
+bool UI_UseAmbientLighing = true;	// 是否使用 Ambient Lighting
+bool UI_UseDiffuseLighing = true;	// 是否使用 Diffuse Lighting
+bool UI_UseSpecularLighing = true;	// 是否使用 Specular Lighting
+
 bool UI_AutoRotation = true;		// 是否要自動旋轉
 bool UI_DrawWireframe = true;		// 是否要畫面
 
@@ -89,6 +93,38 @@ void TW_CALL GetUsePhongShadingCB(void *value, void *clientData)
 	*(bool *)value = UI_UsePhongShading;											// 拿這個值，設定到 UI 上面
 }
 #pragma endregion
+
+#pragma region Ambient Lighting
+void TW_CALL SetUseAmbientLightingCB(const void *value, void *clientData)
+{
+	UI_UseAmbientLighing = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
+}
+void TW_CALL GetUseAmbientLightingCB(void *value, void *clientData)
+{
+	*(bool *)value = UI_UseAmbientLighing;											// 拿這個值，設定到 UI 上面
+}
+#pragma endregion
+#pragma region Diffuse Lighting
+void TW_CALL SetUseDiffuseLightingCB(const void *value, void *clientData)
+{
+	UI_UseDiffuseLighing = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
+}
+void TW_CALL GetUseDiffuseLightingCB(void *value, void *clientData)
+{
+	*(bool *)value = UI_UseDiffuseLighing;											// 拿這個值，設定到 UI 上面
+}
+#pragma endregion
+#pragma region Specular Lighting
+void TW_CALL SetUseSpecularLightingCB(const void *value, void *clientData)
+{
+	UI_UseSpecularLighing = *(const bool *)value;									// 會自動幫你轉成負的，並在 Call 一次 Get
+}
+void TW_CALL GetUseSpecularLightingCB(void *value, void *clientData)
+{
+	*(bool *)value = UI_UseSpecularLighing;											// 拿這個值，設定到 UI 上面
+}
+#pragma endregion
+
 #pragma region Auto Rotation
 void TW_CALL SetAutoRotationCB(const void *value, void *clientData)
 {
@@ -129,12 +165,17 @@ void TwBar_Init()
 	TwSetParam(UIBar, NULL, "size", TW_PARAM_INT32, 2, barSize);
 
 	// 加上事件
-	TwAddVarCB(UIBar, "Flat Shading",	TW_TYPE_BOOL32, SetUseFlatShadingCB,	GetUseFlatShadingCB,	NULL, " group='Lighting Models' ");
-	TwAddVarCB(UIBar, "Gouraud Shading",TW_TYPE_BOOL32, SetUseGouraudShadingCB, GetUseGouraudShadingCB, NULL, " group='Lighting Models' ");
-	TwAddVarCB(UIBar, "Phong Shading",	TW_TYPE_BOOL32, SetUsePhongShadingCB,	GetUsePhongShadingCB,	NULL, " group='Lighting Models' ");
-	TwAddVarCB(UIBar, "Auto Rotation",	TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
-	TwAddVarCB(UIBar, "Draw Wireframe", TW_TYPE_BOOL32,	SetDrawWireframeCB,		GetDrawWireframeCB,		NULL, "");
-	TwAddVarRW(UIBar, "LightDir", TW_TYPE_DIR3F, &lightPos," open ");
+	TwAddVarCB(UIBar, "Flat Shading",		TW_TYPE_BOOL32, SetUseFlatShadingCB,		GetUseFlatShadingCB,		NULL, " group='Lighting Models' ");
+	TwAddVarCB(UIBar, "Gouraud Shading",	TW_TYPE_BOOL32, SetUseGouraudShadingCB,		GetUseGouraudShadingCB,		NULL, " group='Lighting Models' ");
+	TwAddVarCB(UIBar, "Phong Shading",		TW_TYPE_BOOL32, SetUsePhongShadingCB,		GetUsePhongShadingCB,		NULL, " group='Lighting Models' ");
+
+	TwAddVarCB(UIBar, "Ambient Lighting",	TW_TYPE_BOOL32, SetUseAmbientLightingCB,	GetUseAmbientLightingCB,	NULL, " group='Local Lighting' ");
+	TwAddVarCB(UIBar, "Diffuse Lighting",	TW_TYPE_BOOL32, SetUseDiffuseLightingCB,	GetUseDiffuseLightingCB,	NULL, " group='Local Lighting' ");
+	TwAddVarCB(UIBar, "Specular Lighting",	TW_TYPE_BOOL32, SetUseSpecularLightingCB,	GetUseSpecularLightingCB,	NULL, " group='Local Lighting' ");
+
+	TwAddVarCB(UIBar, "Auto Rotation",		TW_TYPE_BOOL32,	SetAutoRotationCB,		GetAutoRotationCB,		NULL, "");
+	TwAddVarCB(UIBar, "Draw Wireframe",		TW_TYPE_BOOL32,	SetDrawWireframeCB,		GetDrawWireframeCB,		NULL, "");
+	TwAddVarRW(UIBar, "LightDir",			TW_TYPE_DIR3F, &lightPos," open ");
 	//TwDefine(" GLOBAL help='This example shows how to integrate AntTweakBar with GLUT and OpenGL.' "); // Message added to the help bar.
 	//TwDefine(" TweakBar size='200 400' color='96 216 224' "); // change default tweak bar size and color
 }
@@ -152,57 +193,57 @@ void Init_Event()
 	lightPos = vec3(0, 10, 10);
 	#pragma region 場景放置
 	#pragma region Flat Shading 的東西
-	ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Cube_8x8.obj", "", true);
+	ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Circle_8x8.obj", "", true);
 	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(true);
 	modelTags.push_back("Flat");
 
-	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_15x15.obj", "", true);
+	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Circle_15x15.obj", "", true);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(true);
 	modelTags.push_back("Flat");
 
-	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Cube_40x40.obj", "", true);
+	tempModel = ModelClass("Flat.vs.glsl", "Flat.fs.glsl", "Circle_40x40.obj", "", true);
 	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(true);
 	modelTags.push_back("Flat");
 	#pragma endregion
 	#pragma region Gouraud Shading 的東西
-	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_8x8.obj", "", false);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Circle_8x8.obj", "", false);
 	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Gouraud");
 
-	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_15x15.obj", "", false);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Circle_15x15.obj", "", false);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Gouraud");
 
-	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Cube_40x40.obj", "", false);
+	tempModel = ModelClass("Gouraud.vs.glsl", "Gouraud.fs.glsl", "Circle_40x40.obj", "", false);
 	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Gouraud");
 	#pragma endregion
 	#pragma region Phong Shading 的東西
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_8x8.obj", "", false);
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Circle_8x8.obj", "", false);
 	tempModel.ModelM *= translate(vec3(-3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Phong");
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_15x15.obj", "", false);
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Circle_15x15.obj", "", false);
 	tempModel.ModelM *= translate(vec3(0, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
 	modelTags.push_back("Phong");
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Cube_40x40.obj", "", false);
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Circle_40x40.obj", "", false);
 	tempModel.ModelM *= translate(vec3(3, 0, 0));
 	models.push_back(tempModel);
 	IsVisiable.push_back(false);
@@ -220,7 +261,8 @@ void Display_Event()
 	// 把 Model 畫出來
 	for (size_t i = 0; i < models.size(); i++)
 		if (IsVisiable[i])
-			models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos, UI_DrawWireframe);
+			models[i].Draw(m_camera.GetProjectionMatrix(aspect), m_camera.GetViewMatrix(), m_camera.GetModelMatrix(), lightPos, UI_DrawWireframe, 
+				UI_UseAmbientLighing, UI_UseDiffuseLighing, UI_UseSpecularLighing);
 
 	// 畫 UI
 	TwDraw();

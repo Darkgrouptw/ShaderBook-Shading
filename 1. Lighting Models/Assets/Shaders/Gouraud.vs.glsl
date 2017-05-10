@@ -25,7 +25,7 @@ uniform uint			IsUseTexture;				// 是否使用貼圖
 
 const vec3 BarryCoordPos[] = vec3[3]( vec3(1,0,0), vec3(0,1,0), vec3(0,0,1));
 
-const vec4 AmbientLightColor = vec4(0.1, 0.1, 0.1, 1);
+const vec4 AmbientLightColor = vec4(0.4, 0.4, 0.4, 1);
 const vec4 DiffuseLightColor = vec4(0.8, 0.8, 0.8, 1);
 const vec4 SpecularLightColor = vec4(1, 1, 1, 1);
 

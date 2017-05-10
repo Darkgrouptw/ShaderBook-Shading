@@ -20,9 +20,13 @@ uniform sampler2D		Texture;
 uniform uint			IsUseTexture;				// 是否使用貼圖
 uniform uint			IsDrawWireframe;			// 是否要話邊線
 
+uniform uint			IsUseAmbientLighting;		// 是否使用 Ambient Lighting
+uniform uint			IsUseDiffuseLighting;		// 是否使用 Diffuse Lighting
+uniform uint			IsUseSpecularLighting;		// 是否使用 Specular Lighting
+
 // 顏色設定
 const vec4 BorderColor			= vec4(0, 0, 0, 1);
-const vec4 AmbientLightColor	= vec4(0.1, 0.1, 0.1, 1);
+const vec4 AmbientLightColor	= vec4(0.4, 0.4, 0.4, 1);
 const vec4 DiffuseLightColor	= vec4(0.8, 0.8, 0.8, 1);
 const vec4 SpecularLightColor	= vec4(1, 1, 1, 1);
 
@@ -44,21 +48,26 @@ void main()
 	// 算顏色 (Illumination = Ka * Ia + Kd * Id + Ks * Is)
 	//////////////////////////////////////////////////////////////////////////
 	// Ambient
-	OutColor +=	AmbientLightColor * vec4(matInfo.Ka, 1) +
-				AmbientLightColor * TextureColor;
+	if(IsUseAmbientLighting == 1)
+		OutColor +=	AmbientLightColor * vec4(matInfo.Ka, 1) +
+					AmbientLightColor * TextureColor;
 
 	// Diffuse
-	OutColor += diff * DiffuseLightColor * vec4(matInfo.Kd, 1) +
-				diff * DiffuseLightColor * TextureColor;
+	if (IsUseDiffuseLighting == 1)
+		OutColor += diff * DiffuseLightColor * vec4(matInfo.Kd, 1) +
+					diff * DiffuseLightColor * TextureColor;
 
 	// Specular
-	vec3 vReflection = normalize(reflect(-ToLightVector, SurfaceNormal));						// 算反射角
-	float spec = max(0.0, dot(SurfaceNormal, vReflection));										// 算反射係數
-	if(diff != 0)
+	if (IsUseSpecularLighting == 1)
 	{
-		spec = pow(spec, matInfo.Shininess);
-		OutColor += SpecularLightColor * vec4(matInfo.Ks, 1) * spec +
-					SpecularLightColor * TextureColor * spec;
+		vec3 vReflection = normalize(reflect(-ToLightVector, SurfaceNormal));						// 算反射角
+		float spec = max(0.0, dot(SurfaceNormal, vReflection));										// 算反射係數
+		if(diff != 0)
+		{
+			spec = pow(spec, matInfo.Shininess);
+			OutColor += SpecularLightColor * vec4(matInfo.Ks, 1) * spec +
+						SpecularLightColor * TextureColor * spec;
+		}
 	}
 
 	// 是否要話 Wireframe

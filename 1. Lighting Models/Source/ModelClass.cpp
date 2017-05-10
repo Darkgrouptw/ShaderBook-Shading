@@ -143,18 +143,22 @@ void ModelClass::InitProgram(string VertexShaderFileName, string FragmentShaderF
 	glLinkProgram(Program);
 
 	// ®³ Model ªº Loc
-	modelLoc.Projection_MatrixLoc	= glGetUniformLocation(Program, "ProjectionM");
-	modelLoc.View_MatrixLoc			= glGetUniformLocation(Program, "ViewM");
-	modelLoc.Model_MatrixLoc		= glGetUniformLocation(Program, "ModelM");
+	modelLoc.Projection_MatrixLoc		= glGetUniformLocation(Program, "ProjectionM");
+	modelLoc.View_MatrixLoc				= glGetUniformLocation(Program, "ViewM");
+	modelLoc.Model_MatrixLoc			= glGetUniformLocation(Program, "ModelM");
 
-	modelLoc.MaterialInfo_KaLoc		= glGetUniformLocation(Program, "matInfo.Ka");
-	modelLoc.MaterialInfo_KdLoc		= glGetUniformLocation(Program, "matInfo.Kd");
-	modelLoc.MaterialInfo_KsLoc		= glGetUniformLocation(Program, "matInfo.Ks");
+	modelLoc.IsUseAmbientLightingLoc	= glGetUniformLocation(Program, "IsUseAmbientLighting");
+	modelLoc.IsUseDiffuseLightingLoc	= glGetUniformLocation(Program, "IsUseDiffuseLighting");
+	modelLoc.IsUseSpecularLightingLoc	= glGetUniformLocation(Program, "IsUseSpecularLighting");
+
+	modelLoc.MaterialInfo_KaLoc			= glGetUniformLocation(Program, "matInfo.Ka");
+	modelLoc.MaterialInfo_KdLoc			= glGetUniformLocation(Program, "matInfo.Kd");
+	modelLoc.MaterialInfo_KsLoc			= glGetUniformLocation(Program, "matInfo.Ks");
 	modelLoc.MaterialInfo_ShininessLoc = glGetUniformLocation(Program, "matInfo.Shininess");
 
-	modelLoc.LightPosLoc			= glGetUniformLocation(Program, "LightPos");
-	modelLoc.IsUseTextureLoc		= glGetUniformLocation(Program, "IsUseTexture");
-	modelLoc.IsDrawWireframeLoc		= glGetUniformLocation(Program, "IsDrawWireframe");
+	modelLoc.LightPosLoc				= glGetUniformLocation(Program, "LightPos");
+	modelLoc.IsUseTextureLoc			= glGetUniformLocation(Program, "IsUseTexture");
+	modelLoc.IsDrawWireframeLoc			= glGetUniformLocation(Program, "IsDrawWireframe");
 }
 void ModelClass::LoadModel(string objFileName, string textureFileName ,bool IsFlat)
 {
@@ -255,7 +259,7 @@ void ModelClass::LoadModel(string objFileName, string textureFileName ,bool IsFl
 	#pragma endregion
 }
 
-void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool IsDrawWireframe)
+void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool IsDrawWireframe, bool IsUseAmbientLighting, bool IsUseDiffuseLighting, bool IsUseSpecularLighting)
 {
 	glUseProgram(Program);
 	glBindVertexArray(model.VAO);
@@ -263,6 +267,10 @@ void ModelClass::Draw(mat4 projM, mat4 viewM, mat4 modelM, vec3 lightPos, bool I
 	glUniformMatrix4fv(modelLoc.Projection_MatrixLoc, 1, GL_FALSE, value_ptr(projM));
 	glUniformMatrix4fv(modelLoc.View_MatrixLoc, 1, GL_FALSE, value_ptr(viewM));
 	glUniformMatrix4fv(modelLoc.Model_MatrixLoc, 1, GL_FALSE, value_ptr(modelM * ModelM));
+
+	glUniform1ui(modelLoc.IsUseAmbientLightingLoc, ((IsUseAmbientLighting) ? 1 : 0));
+	glUniform1ui(modelLoc.IsUseDiffuseLightingLoc, ((IsUseDiffuseLighting) ? 1 : 0));
+	glUniform1ui(modelLoc.IsUseSpecularLightingLoc, ((IsUseSpecularLighting) ? 1 : 0));
 
 	glUniform3fv(modelLoc.MaterialInfo_KaLoc, 1, value_ptr(model.matInfo.Ka));
 	glUniform3fv(modelLoc.MaterialInfo_KdLoc, 1, value_ptr(model.matInfo.Kd));
