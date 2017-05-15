@@ -1,5 +1,5 @@
 #version 410
-in vec3 BarryPos;									// 畫邊界用的
+in vec3 BaryPos;									// 畫邊界用的
 in vec3 SurfaceNormal;								// Lighting Model 相關
 in vec3 ToLightVector;								// Lighting Model 相關
 in vec2 UV;
@@ -32,8 +32,8 @@ const vec4 SpecularLightColor	= vec4(1, 1, 1, 1);
 
 float edgeFactor()
 {
-	vec3 d = fwidth(BarryPos);
-	vec3 a3 = smoothstep(vec3(0.0), d * 0.8f, BarryPos);
+	vec3 d = fwidth(BaryPos);
+	vec3 a3 = smoothstep(vec3(0.0), d * 0.8f, BaryPos);
 	return min(min(a3.x, a3.y), a3.z);
 }
 

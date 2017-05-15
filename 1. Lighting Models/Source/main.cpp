@@ -190,7 +190,7 @@ void Init_Event()
 	m_camera.SetRotation(0, 0.32f);
 
 	// 設定光線
-	lightPos = vec3(0, 10, 10);
+	lightPos = vec3(-1.64f, 6.12f, 12.64f);
 	#pragma region 場景放置
 	#pragma region Flat Shading 的東西
 	ModelClass tempModel("Flat.vs.glsl", "Flat.fs.glsl", "Circle_8x8.obj", "", true);

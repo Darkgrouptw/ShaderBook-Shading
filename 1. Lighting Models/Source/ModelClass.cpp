@@ -203,7 +203,7 @@ void ModelClass::LoadModel(string objFileName, string textureFileName ,bool IsFl
 	model.matInfo.Ka = vec3(0.24725f, 0.1995f, 0.0745f);
 	model.matInfo.Kd = vec3(0.75164f, 0.60648f, 0.22648);
 	model.matInfo.Ks = vec3(0.628281f, 0.555802f, 0.366065f);
-	model.matInfo.Shininess = .1f * 128;
+	model.matInfo.Shininess = .4 * 128;
 	#pragma endregion
 	#pragma region 綁點的資訊上 GPU
 	//////////////////////////////////////////////////////////////////////////

@@ -3,7 +3,7 @@ layout(location = 0) in vec3 VertexPos;
 layout(location = 1) in vec2 VertexUV;
 layout(location = 2) in vec3 VertexNormal;
 
-out vec3 BarryPos;
+out vec3 BaryPos;
 out vec4 OutColor;									// 輸出顏色
 
 uniform mat4 ProjectionM;
@@ -23,7 +23,7 @@ uniform vec3 LightPos;								// 光的位置
 uniform sampler2D		Texture;
 uniform uint			IsUseTexture;				// 是否使用貼圖
 
-const vec3 BarryCoordPos[] = vec3[3]( vec3(1,0,0), vec3(0,1,0), vec3(0,0,1));
+const vec3 BaryCoordPos[] = vec3[3]( vec3(1,0,0), vec3(0,1,0), vec3(0,0,1));
 
 const vec4 AmbientLightColor = vec4(0.4, 0.4, 0.4, 1);
 const vec4 DiffuseLightColor = vec4(0.8, 0.8, 0.8, 1);
@@ -42,7 +42,7 @@ void main()
 
 	float diff = max(0, dot(SurfaceNormal, ToLightVector));
 
-	BarryPos = BarryCoordPos[gl_VertexID % 3];
+	BaryPos = BaryCoordPos[gl_VertexID % 3];
 
 	//////////////////////////////////////////////////////////////////////////
 	// 算顏色 (Illumination = Ka * Ia + Kd * Id + Ks * Is)

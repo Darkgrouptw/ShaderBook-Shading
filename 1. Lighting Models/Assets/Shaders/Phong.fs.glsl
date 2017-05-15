@@ -1,5 +1,5 @@
 #version 410
-in vec3 BarryPos;									// 畫邊界用的
+in vec3 BaryPos;									// 畫邊界用的
 in vec3 SurfaceNormal;								// Lighting Model 相關
 in vec3 ToLightVector;								// Lighting Model 相關
 in vec2 UV;
@@ -25,15 +25,15 @@ uniform uint			IsUseDiffuseLighting;		// 是否使用 Diffuse Lighting
 uniform uint			IsUseSpecularLighting;		// 是否使用 Specular Lighting
 
 // 顏色設定
-const vec4 BorderColor		= vec4(0, 0, 0, 1);
+const vec4 BorderColor			= vec4(0, 0, 0, 1);
 const vec4 AmbientLightColor	= vec4(0.4, 0.4, 0.4, 1);
 const vec4 DiffuseLightColor	= vec4(0.8, 0.8, 0.8, 1);
 const vec4 SpecularLightColor	= vec4(1, 1, 1, 1);
 
 float edgeFactor()
 {
-	vec3 d = fwidth(BarryPos);
-	vec3 a3 = smoothstep(vec3(0.0), d * 0.8f, BarryPos);
+	vec3 d = fwidth(BaryPos);
+	vec3 a3 = smoothstep(vec3(0.0), d * 0.8f, BaryPos);
 	return min(min(a3.x, a3.y), a3.z);
 }
 
