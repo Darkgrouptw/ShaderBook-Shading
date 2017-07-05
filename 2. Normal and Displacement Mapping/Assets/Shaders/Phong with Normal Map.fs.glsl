@@ -19,7 +19,6 @@ uniform sampler2D		Texture;
 uniform sampler2D		NormalMap;
 
 // ÃC¦â³]©w
-const vec4 BorderColor			= vec4(0, 0, 0, 1);
 const vec4 AmbientLightColor	= vec4(0.4, 0.4, 0.4, 1);
 const vec4 DiffuseLightColor	= vec4(0.8, 0.8, 0.8, 1);
 const vec4 SpecularLightColor	= vec4(1, 1, 1, 1);

@@ -151,11 +151,11 @@ void Init_Event()
 	glEnable(GL_TEXTURE_2D);
 
 	// Camera 設定
-	//m_camera.SetZoom(1.56294f);
-	//m_camera.SetRotation(0, 0.32f);
+	m_camera.SetZoom(1.56294f);
+	m_camera.SetRotation(0, 0.32f);
 
 	// 設定光線
-	lightPos = vec3(-1.64f, 6.12f, 12.64f);
+	lightPos = vec3(1.45f, 2.82f, 18.29f);
 	#pragma region 場景放置
 	#pragma region Shading 的東西
 	vector<string> ShaderName;
