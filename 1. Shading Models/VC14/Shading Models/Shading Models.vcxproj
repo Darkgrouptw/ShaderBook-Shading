@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F8376344-4D88-4DBC-832B-7D4BB528FA40}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Lighting Models</RootNamespace>
+    <RootNamespace>Shading Models</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
