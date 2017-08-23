@@ -74,100 +74,44 @@ void Init_Event()
 	lightPos = vec3(0.38f, 0.23f, 14.13f);
 	#pragma region 場景放置
 	#pragma region Phong 的東西
-	ModelClass tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Body.obj", "");
+	ModelClass tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Body.obj", "");
 	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Left_bEye.obj", "");
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Left_Foot.obj", "");
 	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Left_fEye.obj", "");
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Left_Hand.obj", "");
 	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Left_Foot.obj", "");
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Right_Foot.obj", "");
 	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Left_Hand.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_lFace.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Mouth.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_rFace.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Right_bEye.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Right_fEye.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Right_Foot.obj", "");
-	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Kirby_Right_Hand.obj", "");
+	tempModel = ModelClass("Phong.vs.glsl", "Phong.fs.glsl", "Right_Hand.obj", "");
 	tempModel.ModelM *= translate(vec3(-1.5, 0, 0));
 	models.push_back(tempModel);
 	#pragma endregion
 	#pragma region Toon Shading 的東西
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Body.obj", "");
+	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Body.obj", "");
 	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Left_bEye.obj", "");
+	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Left_Foot.obj", "");
 	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Left_fEye.obj", "");
+	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Left_Hand.obj", "");
 	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Left_Foot.obj", "");
+	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Right_Foot.obj", "");
 	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
 	models.push_back(tempModel);
 
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Left_Hand.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_lFace.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Mouth.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_rFace.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Right_bEye.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Right_fEye.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Right_Foot.obj", "");
-	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
-	models.push_back(tempModel);
-
-	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Kirby_Right_Hand.obj", "");
+	tempModel = ModelClass("Toon.vs.glsl", "Toon.fs.glsl", "Right_Hand.obj", "");
 	tempModel.ModelM *= translate(vec3(1.5, 0, 0));
 	models.push_back(tempModel);
 	#pragma endregion

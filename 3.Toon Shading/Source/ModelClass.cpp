@@ -173,30 +173,25 @@ void ModelClass::LoadModel(string objFileName, string textureFileName)
 	
 	// Default ¬O Gold
 	#pragma region Material ªº
-	if (objFileName == "Kirby_Body.obj" || objFileName == "Kirby_Left_Hand.obj" || objFileName == "Kirby_Right_Hand.obj")
+	if (objFileName == "Body.obj" || objFileName == "Left_Hand.obj" || objFileName == "Right_Hand.obj")
 	{
 		model.matInfo.Kd = vec3(materials[4].diffuse[0], materials[4].diffuse[1], materials[4].diffuse[2]);
 		model.matInfo.Ka = vec3(materials[4].ambient[0], materials[4].ambient[1], materials[4].ambient[2]);
 	}
-	else if (objFileName == "Kirby_Left_bEye.obj" || objFileName == "Kirby_Right_bEye.obj")
+	else if (objFileName == "Left_bEye.obj" || objFileName == "Right_bEye.obj")
 	{
 		model.matInfo.Kd = vec3(materials[2].diffuse[0], materials[2].diffuse[1], materials[2].diffuse[2]);
 		model.matInfo.Ka = vec3(materials[2].ambient[0], materials[2].ambient[1], materials[2].ambient[2]);
 	}
-	else if (objFileName == "Kirby_Left_fEye.obj" || objFileName == "Kirby_Right_fEye.obj" || objFileName =="Kirby_lFace.obj" || objFileName == "Kirby_rFace.obj")
+	else if (objFileName == "Left_fEye.obj" || objFileName == "Right_fEye.obj")
 	{
 		model.matInfo.Kd = vec3(materials[3].diffuse[0], materials[3].diffuse[1], materials[3].diffuse[2]);
 		model.matInfo.Ka = vec3(materials[3].ambient[0], materials[3].ambient[1], materials[3].ambient[2]);
 	}
-	else if (objFileName == "Kirby_Left_Foot.obj" || objFileName == "Kirby_Right_Foot.obj")
+	else if (objFileName == "Left_Foot.obj" || objFileName == "Right_Foot.obj")
 	{
 		model.matInfo.Kd = vec3(materials[0].diffuse[0], materials[0].diffuse[1], materials[0].diffuse[2]);
 		model.matInfo.Ka = vec3(materials[0].ambient[0], materials[0].ambient[1], materials[0].ambient[2]);
-	}
-	else if (objFileName == "Kirby_Mouth.obj")
-	{
-		model.matInfo.Kd = vec3(materials[5].diffuse[0], materials[5].diffuse[1], materials[5].diffuse[2]);
-		model.matInfo.Ka = vec3(materials[5].ambient[0], materials[5].ambient[1], materials[5].ambient[2]);
 	}
 	else
 	{
