@@ -34,3 +34,6 @@ It's an example in Shader books. It shows how toon shading effects to the models
 1. [Shading Model](https://youtu.be/69bhIAFV5GQ)
 2. [Normal Mapping and Displacement Mapping](https://youtu.be/44PPpQIT7sw)
 3. [Toon Shading](https://youtu.be/w2ivtbvvOM0)
+
+## ISBN
+9789863125112
