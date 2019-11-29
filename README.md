@@ -14,9 +14,11 @@ You can see the light that effects on the models.
 It's an example in Shader books.
 It shows the different from normal mapping, and displacement mapping effect on the model.
 With this technology, we can generate a complex model to make sure the model look real. 
-![]("2. Normal and Displacement Mapping\Assets\Images\Texture.png")
-![]("2. Normal and Displacement Mapping\Assets\Images\Displacement Map.png")
-![]("2. Normal and Displacement Mapping\Assets\Images\Normal Map.png")
+
+![](https://raw.githubusercontent.com/Darkgrouptw/ShaderBook-Shading/master/2.%20Normal%20and%20Displacement%20Mapping/Assets/Images/Texture.png)
+![](https://raw.githubusercontent.com/Darkgrouptw/ShaderBook-Shading/master/2.%20Normal%20and%20Displacement%20Mapping/Assets/Images/Normal%20Map.png)
+![](https://raw.githubusercontent.com/Darkgrouptw/ShaderBook-Shading/master/2.%20Normal%20and%20Displacement%20Mapping/Assets/Images/Displacement%20Map.png)
+
 
 The screenshot of the execution file 
 ![](Images/NormalMapping.png)
