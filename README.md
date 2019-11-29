@@ -36,5 +36,6 @@ It's an example in Shader books. It shows how toon shading effects to the models
 3. [Toon Shading](https://youtu.be/w2ivtbvvOM0)
 
 ## ISBN
-[9789863125112](https://www.books.com.tw/products/0010797474)
+9789863125112
+[Shop](https://www.books.com.tw/products/0010797474)
 
