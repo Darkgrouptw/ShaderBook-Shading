@@ -22,6 +22,7 @@
     <ProjectGuid>{F8376344-4D88-4DBC-832B-7D4BB528FA40}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Normal and Displacement Mapping</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -61,6 +62,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>..\..\Libs\VC;$(LibraryPath)</LibraryPath>
     <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)..\..\Assets\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
